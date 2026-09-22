@@ -8,7 +8,6 @@ authors:
 repository-code: "https://github.com/alejandrocuevas-ufro/mada-zhou-i2-reproducibility"
 url: "https://github.com/alejandrocuevas-ufro/mada-zhou-i2-reproducibility"
 version: "1.0.0"
-license: "MIT"
 keywords:
   - "diagnostic test accuracy"
   - "meta-analysis"
