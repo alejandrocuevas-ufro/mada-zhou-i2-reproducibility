@@ -2,6 +2,8 @@
 
 This repository accompanies a methodological audit of the Zhou–Dendukuri bivariate I² reported by `summary.reitsma()` in R package `mada` 0.5.12.
 
+**Archived release v1.0.0:** https://doi.org/10.5281/zenodo.22887677
+
 The repository has four aims:
 
 1. reproduce the I² currently returned by `mada`;
@@ -78,8 +80,8 @@ The Pinto-Villalba TCCS ischaemic analysis illustrates a separate property of th
 
 No individual participant data are included. All reanalyses use aggregate 2×2 counts available in the cited publications or reconstructed directly from published event/total information.
 
-## Repository
+## Repository and archived release
 
-https://github.com/alejandrocuevas-ufro/mada-zhou-i2-reproducibility
+GitHub: https://github.com/alejandrocuevas-ufro/mada-zhou-i2-reproducibility
 
-For manuscript submission, a versioned release should be archived in a DOI-granting repository such as Zenodo and the permanent DOI added to the Data and Code Availability statement.
+Archived release v1.0.0: https://doi.org/10.5281/zenodo.22887677
