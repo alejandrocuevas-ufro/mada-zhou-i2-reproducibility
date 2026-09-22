@@ -1,13 +1,15 @@
 cff-version: 1.2.0
-message: "If you use this code or data, please cite this repository."
+message: "If you use this code or data, please cite the archived release."
 title: "Reproducibility archive for the Zhou–Dendukuri bivariate I² audit in mada"
 type: software
 authors:
   - family-names: "Cuevas Villegas"
     given-names: "Alejandro"
 repository-code: "https://github.com/alejandrocuevas-ufro/mada-zhou-i2-reproducibility"
-url: "https://github.com/alejandrocuevas-ufro/mada-zhou-i2-reproducibility"
+url: "https://doi.org/10.5281/zenodo.22887677"
 version: "1.0.0"
+doi: "10.5281/zenodo.22887677"
+date-released: "2026-09-22"
 keywords:
   - "diagnostic test accuracy"
   - "meta-analysis"
