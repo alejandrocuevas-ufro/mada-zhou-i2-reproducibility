@@ -1,0 +1,8 @@
+dataset,analysis_ids,source_type,source_location,doi,notes
+Dragota 2026 — SII / thyroid cancer,dragota_primary,Reconstructed from published forest plot,Figure 3 (events/total for sensitivity and specificity),10.3389/fimmu.2026.1852817,TP and FN reconstructed from sensitivity events/total; TN and FP from specificity events/total. Six study-level 2x2 tables. Total N=2209.
+Manetas-Stavrakakis 2023 — PPG,manetas_ppg,Transcribed from published table,Table 1,10.3390/jcm12206576,18 device/study arms. Non-classifiable results excluded as in the original analysis.
+Manetas-Stavrakakis 2023 — single-lead ECG,manetas_ecg,Transcribed from published table,Table 1,10.3390/jcm12206576,32 device/study arms. Several zero cells; reproduction uses correction=0.5 and correction.control='all'.
+Pinto-Villalba 2026 — transcranial ultrasonography,pinto_global; pinto_tccs_ischemic; pinto_hemorrhagic,Transcribed from published table,Table 3,10.3389/fneur.2026.1726046,14 rows from 13 studies; unit is ultrasound examinations. Global includes all 14 rows. Hemorrhagic subgroup includes three TCCS rows plus one POCUS row.
+AuditC6,AuditC6,Public example,Values embedded in validation script,,Six-study example used to isolate the implementation discrepancy without zero cells.
+AuditC,AuditC,Dataset distributed with R package mada,"data('AuditC', package='mada')",10.32614/CRAN.package.mada,Loaded directly from mada during reproduction.
+Telomerase example,metadta_telomerase,Public worked example,Nyaga & Arbyn tutorial,10.1186/s13690-021-00747-5,Used to compare the formula implemented by metadta. Published model parameters are rounded.
