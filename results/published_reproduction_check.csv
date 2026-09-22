@@ -1,0 +1,7 @@
+"analysis_id","published_I2_percent","reproduced_I2_percent","absolute_difference_pp","within_0.15_pp"
+"dragota_primary",71.8,71.7667808460611,0.0332191539388589,TRUE
+"manetas_ppg",12.5,12.5281919515605,0.0281919515604603,TRUE
+"manetas_ecg",9.2,9.22799529763673,0.0279952976367337,TRUE
+"pinto_global",14.4,14.4086189024505,0.00861890245048968,TRUE
+"pinto_tccs_ischemic",0,0.00108453521075188,0.00108453521075188,TRUE
+"pinto_hemorrhagic",13.1,13.1185466694443,0.0185466694443086,TRUE
