@@ -1,0 +1,3 @@
+Disponibilidad de datos y código
+
+Los datos agregados 2×2 utilizados para los reanálisis, su procedencia y el código R necesario para reproducir los cálculos estarán disponibles en un repositorio público y versionado [DOI DEL REPOSITORIO]. El repositorio incluye scripts para reproducir la implementación de I² de `mada` 0.5.12, reconstruir el estadístico de Zhou–Dendukuri, repetir los análisis publicados y ejecutar la simulación Monte Carlo. También se incluyen la semilla de simulación, las versiones del software y el código de `summary.reitsma()` correspondiente a la versión auditada. No se utilizaron datos individuales de participantes.
