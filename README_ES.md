@@ -2,6 +2,8 @@
 
 Este repositorio acompaña la auditoría metodológica del I² bivariado de Zhou–Dendukuri informado por `summary.reitsma()` en `mada` 0.5.12.
 
+**Versión v1.0.0 archivada en Zenodo:** https://doi.org/10.5281/zenodo.22887677
+
 ## Qué permite reproducir
 
 1. El I² que actualmente entrega `mada`.
@@ -42,14 +44,12 @@ Antes de calcular el I² corregido, `03_reanalyse_published.R` reproduce el valo
 
 La semilla es `20260918`. Se realizan 500 réplicas para K = 6, 10, 20, 40, 80 y 160, manteniendo constantes los parámetros poblacionales y los tamaños de los grupos con y sin enfermedad.
 
-Los archivos de `expected/` son referencias de desarrollo. Antes del envío del manuscrito deben sustituirse, cuando corresponda, por los resultados obtenidos al ejecutar los scripts directamente con R y `mada` 0.5.12.
+## Archivo permanente
 
-## Antes de depositar el repositorio
+La release `v1.0.0` asociada a esta versión del análisis está archivada en Zenodo:
 
-La versión que se archive con DOI debería contener:
+https://doi.org/10.5281/zenodo.22887677
 
-- todos los archivos de `data/` y `scripts/`;
-- los resultados finales producidos por `Rscript run_all.R`;
-- `results/sessionInfo.txt`;
-- la figura final utilizada en el manuscrito; y
-- una versión etiquetada del repositorio que coincida con la versión sometida del artículo.
+El repositorio de desarrollo se mantiene en:
+
+https://github.com/alejandrocuevas-ufro/mada-zhou-i2-reproducibility
