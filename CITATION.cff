@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite this repository."
+title: "Reproducibility archive for the Zhou–Dendukuri bivariate I² audit in mada"
+type: software
+authors:
+  - family-names: "Cuevas Villegas"
+    given-names: "Alejandro"
+repository-code: "https://github.com/alejandrocuevas-ufro/mada-zhou-i2-reproducibility"
+url: "https://github.com/alejandrocuevas-ufro/mada-zhou-i2-reproducibility"
+version: "1.0.0"
+license: "MIT"
+keywords:
+  - "diagnostic test accuracy"
+  - "meta-analysis"
+  - "heterogeneity"
+  - "bivariate I2"
+  - "Zhou-Dendukuri"
+  - "mada"
+  - "Reitsma"
+abstract: >-
+  Reproducibility materials for a methodological audit of the Zhou–Dendukuri
+  bivariate I² reported by summary.reitsma() in mada 0.5.12. The repository
+  contains aggregate 2×2 data, R code for reproducing the native implementation
+  and the reconstructed statistic, published reanalyses, and a Monte Carlo
+  simulation evaluating the behaviour of the statistic as the number of studies
+  increases while population heterogeneity remains fixed.
