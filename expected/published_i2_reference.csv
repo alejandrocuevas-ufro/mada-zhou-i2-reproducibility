@@ -1,0 +1,7 @@
+analysis_id,published_i2_percent,mada_reproduced_i2_percent_reference,corrected_i2_percent_reference,note
+dragota_primary,71.8,71.7667808460611,90.4597136857896,Six studies; no zero cells.
+manetas_ppg,12.5,12.5281919515605,58.0914065184109,18 arms; no zero-cell correction required.
+manetas_ecg,9.2,9.22799529763673,53.1880365029383,32 arms; 0.5 added to all cells for model fitting; original freqdata used in native mada I2 denominators.
+pinto_global,14.4,14.4086189024505,50.5680453443531,14 arms; 0.5 all-cell correction for fitting.
+pinto_tccs_ischemic,0.0,0.00108453521075188,0.00256358669216395,Near-singular random-effects covariance; rho approximately -1.
+pinto_hemorrhagic,13.1,13.1185466694443,26.491637961839,Four arms: three TCCS plus one POCUS.
