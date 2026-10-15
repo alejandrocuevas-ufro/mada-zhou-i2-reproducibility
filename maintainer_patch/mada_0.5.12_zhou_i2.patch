@@ -1,0 +1,36 @@
+diff --git a/R/reitsma.R b/R/reitsma.R
+--- a/R/reitsma.R
++++ b/R/reitsma.R
+@@
+-    tau_a <- (tabfixed[1,2])^2
+-    tau_b <- (tabfixed[2,2])^2
+-    cor_sq <- (corRandom[1,2])^2
++    ## Zhou-Dendukuri bivariate I2:
++    ## between-study variance components are the diagonal elements of Psi
++    tau_a <- Psi[1,1]
++    tau_b <- Psi[2,2]
+@@
+-    Nia <- 1/(object$freqdata$TP + object$freqdata$FP)
+-    Nib <- 1/(object$freqdata$TN + object$freqdata$FN)
++    ## Reference-status group sizes
++    Nia <- 1/(object$freqdata$TP + object$freqdata$FN)
++    Nib <- 1/(object$freqdata$TN + object$freqdata$FP)
+     NiA <- sum(Nia)
+     NiB <- sum(Nib)
+     
+-    tau <- (1-cor_sq)*tau_a*tau_b
++    ## |T| in Zhou and Dendukuri is the determinant of the
++    ## between-study variance-covariance matrix.
++    ## A fitted covariance matrix can be numerically on the
++    ## positive-semidefinite boundary, producing a tiny negative
++    ## determinant through floating-point roundoff.
++    tau <- det(Psi)
++    tau_scale <- prod(diag(Psi))
++    tau_tol <- sqrt(.Machine$double.eps) * max(1, abs(tau_scale))
++    if (tau < 0 && abs(tau) <= tau_tol) tau <- 0
++    if (tau < 0) {
++      stop("Negative determinant of Psi beyond numerical tolerance.")
++    }
+     em <- ((exp((tau_a/2)+theta_a)+exp((tau_a/2)-theta_a)+2)*K*NiA)*((exp((tau_b/2)+theta_b)+exp((tau_b/2)-theta_b)+2)*K*NiB)
+     
+     i2_z <- (tau^0.5)/((em^0.5)+(tau^0.5))
