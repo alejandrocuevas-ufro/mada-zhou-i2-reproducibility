@@ -45,6 +45,9 @@ jobs:
       - name: Validate determinant boundary and TCCS application
         run: Rscript scripts/05_test_determinant_boundary.R
 
+      - name: Verify formal phase A properties
+        run: Rscript scripts/06_test_phase_a.R
+
       - name: Upload complete reproducibility artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -53,5 +56,6 @@ jobs:
           path: |
             results/
             analisis_determinante_rho_v01_salida/
+            phase_A_outputs/
           if-no-files-found: warn
           retention-days: 30
