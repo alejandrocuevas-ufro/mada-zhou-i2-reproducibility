@@ -29,11 +29,16 @@ jobs:
       - name: Verify determinant boundary and archived example
         run: Rscript scripts/05_test_determinant_boundary.R
 
+      - name: Verify formal phase A theorems and archived TCCS case
+        run: Rscript scripts/06_test_phase_a.R
+
       - name: Upload deterministic CSVs and figure
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: determinant-boundary-results
-          path: analisis_determinante_rho_v01_salida/
+          path: |
+            analisis_determinante_rho_v01_salida/
+            phase_A_outputs/
           if-no-files-found: warn
           retention-days: 30
