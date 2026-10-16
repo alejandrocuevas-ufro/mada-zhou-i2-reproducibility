@@ -20,7 +20,7 @@ colnames(Y) <- c("logit_Se", "logit_FPR")
 colnames(S) <- c("var_logit_Se", "var_logit_FPR")
 stopifnot(all(is.finite(Y)), all(S > 0))
 
-profile_objective <- function(logvar, rho, method = "ml") {
+profile_objective <- function(logvar, rho, likelihood = "ml") {
   # v1 and v2 are between-study variances; rho is correlation.
   v <- exp(logvar)
   c12 <- rho * sqrt(v[1] * v[2])
@@ -40,7 +40,7 @@ profile_objective <- function(logvar, rho, method = "ml") {
   e2 <- Y[,2] - beta[2]
   Q <- sum(i11*e1^2 + 2*i12*e1*e2 + i22*e2^2)
   obj <- sum(log(d)) + Q
-  if (method == "reml") {
+  if (likelihood == "reml") {
     # REML adds log|sum(S_i+Psi)^(-1)|, up to a rho-independent term.
     logdetA <- determinant(A, logarithm=TRUE)
     if (logdetA$sign <= 0) return(1e100)
@@ -67,7 +67,7 @@ for (method in c("ml","reml")) {
   for (rho in rho_grid) {
     trials <- lapply(seq_len(nrow(starts)), function(i) {
       tryCatch(
-        stats::optim(starts[i,], profile_objective, rho=rho, method=method,
+        stats::optim(starts[i,], profile_objective, rho=rho, likelihood=method,
                      method="L-BFGS-B", lower=c(-18,-18), upper=c(8,8),
                      control=list(maxit=250)),
         error=function(e) e
@@ -98,7 +98,7 @@ for (method in c("ml","reml")) {
   # that the function and the mada model use the same likelihood geometry.
   ref <- baseline[baseline$method==method, ]
   plug <- profile_objective(log(c(ref$tau2_se,ref$tau2_fpr)),
-                            rho=ref$rho_se_fpr, method=method)
+                            rho=ref$rho_se_fpr, likelihood=method)
   stopifnot(is.finite(plug),
             min(profile$neg2logLik_up_to_constant[sel]) <= plug + 1e-4,
             plug - min(profile$neg2logLik_up_to_constant[sel]) < .2)
