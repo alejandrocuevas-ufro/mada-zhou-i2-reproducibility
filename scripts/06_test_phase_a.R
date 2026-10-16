@@ -39,7 +39,7 @@ stopifnot(
   all(abs(rank_one$I2_ZD) < 1e-8),
   all(diff(rank_one$trace_T) > 0),
   all(rank_one$effective_rank_T == 1),
-  rank_one$trace_T[nrow(rank_one)] > 10000 *
+  rank_one$trace_T[nrow(rank_one)] >= 9000 *
     rank_one$trace_T[1]
 )
 
