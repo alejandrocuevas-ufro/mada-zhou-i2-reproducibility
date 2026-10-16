@@ -90,6 +90,7 @@ for (method in c("ml","reml")) {
 }
 profile <- do.call(rbind,records)
 row.names(profile) <- NULL
+profile$delta_deviance <- NA_real_
 for (method in c("ml","reml")) {
   sel <- profile$method==method
   profile$delta_deviance[sel] <- profile$neg2logLik_up_to_constant[sel] -
