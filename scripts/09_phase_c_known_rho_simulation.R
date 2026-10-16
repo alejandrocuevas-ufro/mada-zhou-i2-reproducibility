@@ -225,7 +225,13 @@ draw_plot <- function(value,ylabel,file) {
   png(file.path(outdir,file),width=2200,height=1450,res=220)
   par(mfrow=c(1,2),mar=c(5,5,3,2))
   for(scheme in sample_schemes$scheme) {
-    d <- subset(sums,method=="reml" & scheme==scheme)
+    # Use explicit indexing: subset(sums, scheme == scheme) silently
+    # compares the data column to itself and mixes both sample regimes.
+    d <- sums[sums$method == "reml" & sums$scheme == scheme, , drop=FALSE]
+    stopifnot(nrow(d) == length(rho_grid)*length(K_grid),
+              length(unique(d$scheme)) == 1L,
+              length(unique(d$nD)) == 1L,
+              length(unique(d$nND)) == 1L)
     plot(range(rho_grid),c(0,1),type="n",
          xlab="True between-study correlation",
          ylab=ylabel,main=paste(scheme,"(nD/nND:",
