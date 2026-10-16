@@ -85,3 +85,7 @@ No individual participant data are included. All reanalyses use aggregate 2×2 c
 GitHub: https://github.com/alejandrocuevas-ufro/mada-zhou-i2-reproducibility
 
 Archived release v1.0.0: https://doi.org/10.5281/zenodo.22887677
+
+## GitHub Actions: run R without a local installation
+
+The new automated [determinant/rho boundary check](.github/workflows/r-boundary-check.yml) verifies limiting behaviour and the archived TCCS ischaemic reanalysis whenever a pull request is opened. The [full archived mada 0.5.12 audit](.github/workflows/r-full-reproduction.yml), including 3,000 REML simulations, is available on demand from the **Actions** tab after merging the workflow to `main`. Both workflows upload their outputs as downloadable artifacts. See [the step-by-step instructions](docs/GITHUB_ACTIONS.md) for execution and limitations.
