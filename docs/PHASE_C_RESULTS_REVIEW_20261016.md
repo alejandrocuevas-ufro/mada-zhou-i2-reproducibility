@@ -6,6 +6,16 @@
 
 - 132 prespecified population scenarios (11 correlations, 6 study counts, 2 precision regimes).
 - 100 generated datasets per scenario and 13,200 REML fits; 1,800 paired ML fits in a targeted subset; all **15,000** fits produced finite model results, with **0 captured warnings** and no captured fit or extraction errors.
+
+> **Correction (Phase D1, 2026-10-16).** The preceding sentence must not be read
+> as a quality check. `status == "ok"` means only that `reitsma()` returned an
+> object, and `mada`/`mvmeta` emit no warning when the fitted correlation
+> reaches the singular boundary — which is why 0 warnings were recorded across
+> 15,000 fits even in scenarios where 79 % of fits sit exactly at |ρ̂| = 1. The
+> Phase D1 audit additionally shows `converged == TRUE` in 100 % of replicates
+> in every scenario examined, boundary solutions included. Any report of these
+> runs should state the fraction of boundary solutions next to the success
+> count. See [`PHASE_D1_AUDIT.md`](PHASE_D1_AUDIT.md) §3.
 - Independently checked all **150** method-specific scenario summaries against their 100 underlying replicate records. Fitted I² medians and key event probabilities agree exactly.
 - Independently recomputed all 132 theoretical population Zhou–Dendukuri I² targets with the original means, random-effects variances, and within-study formulas; all agreed numerically.
 - Each targeted ML replicate has the corresponding REML replicate on the same scenario and replicate ID.
