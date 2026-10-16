@@ -1,9 +1,16 @@
 name: R | Phase B Reitsma stability
 
 'on':
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/07_*.R'
+      - 'scripts/08_*.R'
+      - '.github/workflows/r-phase-b.yml'
   pull_request:
     paths:
       - 'scripts/07_*.R'
+      - 'scripts/08_*.R'
       - '.github/workflows/r-phase-b.yml'
       - 'docs/PHASE_B_REITSMA_STABILITY.md'
   workflow_dispatch:
@@ -24,7 +31,7 @@ jobs:
     timeout-minutes: 120
     env:
       R_KEEP_PKG_SOURCE: 'yes'
-      PHASE_B_BOOTSTRAP: ${{ github.event_name == 'pull_request' && '30' || inputs.bootstrap_replicates || '400' }}
+      PHASE_B_BOOTSTRAP: ${{ github.event_name == 'pull_request' && '30' || '400' }}
     steps:
       - name: Checkout the source revision
         uses: actions/checkout@v4
