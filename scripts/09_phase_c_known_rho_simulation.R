@@ -258,6 +258,11 @@ capture.output({
   print(sessionInfo())
 },file=file.path(outdir,"sessionInfo.txt"))
 
+cat("\nPHASE C DIAGNOSTIC STATUS\n")
+print(table(results$status,useNA="ifany"))
+cat("Failure reasons (top entries):\n")
+print(utils::head(sort(table(results$failure_reason[results$status!="ok"]),
+                       decreasing=TRUE),10))
 cat("\nPHASE C TOTAL: scenarios=",nrow(design),
     " reps=",R," fits=",nrow(results),
     " success=",sum(results$status=="ok"),
