@@ -225,7 +225,13 @@ draw_plot <- function(value,ylabel,file) {
   png(file.path(outdir,file),width=2200,height=1450,res=220)
   par(mfrow=c(1,2),mar=c(5,5,3,2))
   for(scheme in sample_schemes$scheme) {
-    d <- subset(sums,method=="reml" & scheme==scheme)
+    # Use explicit indexing: subset(sums, scheme == scheme) silently
+    # compares the data column to itself and mixes both sample regimes.
+    d <- sums[sums$method == "reml" & sums$scheme == scheme, , drop=FALSE]
+    stopifnot(nrow(d) == length(rho_grid)*length(K_grid),
+              length(unique(d$scheme)) == 1L,
+              length(unique(d$nD)) == 1L,
+              length(unique(d$nND)) == 1L)
     plot(range(rho_grid),c(0,1),type="n",
          xlab="True between-study correlation",
          ylab=ylabel,main=paste(scheme,"(nD/nND:",
@@ -234,8 +240,14 @@ draw_plot <- function(value,ylabel,file) {
     for(k in ks) {
       z <- d[d$K==k,]
       z <- z[order(z$rho_true),]
-      lines(z$rho_true,z[[value]],lty=match(k,ks),lwd=1.7)
-      points(z$rho_true,z[[value]],pch=match(k,ks),cex=.55)
+      yy <- z[[value]]
+      # This discordance is undefined outside population I2 >= 25%; do
+      # not plot such cases as an observed discordance probability of zero.
+      if (value == "discordant_low_I2_fraction_success") {
+        yy[z$pop_I2_ZD < 0.25] <- NA_real_
+      }
+      lines(z$rho_true,yy,lty=match(k,ks),lwd=1.7)
+      points(z$rho_true,yy,pch=match(k,ks),cex=.55)
     }
     legend("top",legend=paste("K =",ks),lty=seq_along(ks),
            pch=seq_along(ks),bty="n",cex=.65,ncol=3)
