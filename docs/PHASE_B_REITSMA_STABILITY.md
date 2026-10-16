@@ -20,7 +20,8 @@ The primary analysis follows the eight archived rows. An exploratory publication
 4. Leave-one-arm-out: eight exclusions per estimator; examine changes in correlation, marginal variances, determinant and I².
 5. Leave-one-publication-family-out: seven exclusions per estimator, including removal of both Postert rows together.
 6. Exploratory nonparametric bootstrap: resample complete 2x2 rows with replacement (eight arm draws) or publication families (seven clusters, potentially including both Postert rows together). Run each resample with both REML and ML, reusing the SAME resampled dataset to compare estimators.
-7. Diagnostics: failed fits, warnings, convergence codes when exposed, number of distinct units, marginal random-effects variances, rho, distance to |rho|=1, corrected Zhou I², marginal variance ratios, strongest/weakest generalized-eigenvalue fractions, and experimental determinant-of-total comparator.
+7. Profiled likelihood: at prespecified fixed rho grid values from -1 to +1, reoptimise both marginal between-study variances; analytically profile the pooled logit Se and logit FPR intercepts. The objective is the exact normal-normal Gaussian ML/REML likelihood geometry used by mada, up to rho-independent constants. The resulting profile differences are descriptive: standard chi-square cutoffs do NOT have established boundary calibration here. A flat profile or competing fits with a near-zero marginal variance expose weak identifiability.
+8. Diagnostics: failed fits, warnings, convergence codes when exposed, number of distinct units, marginal random-effects variances, rho, distance to |rho|=1, corrected Zhou I², marginal variance ratios, strongest/weakest generalized-eigenvalue fractions, and experimental determinant-of-total comparator.
 
 ## Predefined interpretation rules
 
@@ -28,7 +29,7 @@ The near-boundary flag is abs(rho) >= 0.999, with a more extreme secondary thres
 
 Reported 2.5%, 50% and 97.5% bootstrap quantiles summarize only successful refits. They are NOT validated 95% confidence intervals at the covariance boundary. Failure rates and denominators are retained explicitly. A large fraction of boundary estimates can occur with weak identifiability and does not prove the true correlation equals -1.
 
-At k=8, resampling studies with replacement creates duplicates and sometimes few unique independent units. Such refits are diagnostic rather than reliable standalone inference; a likelihood profile and fully binomial-normal GLMM may be needed to investigate true correlation uncertainty.
+At k=8, resampling studies with replacement creates duplicates and sometimes few unique independent units. Such refits are diagnostic rather than reliable standalone inference; a likelihood profile and fully binomial-normal GLMM may be needed to investigate true correlation uncertainty. The fixed-rho profile is now included, but is not an inferential confidence region or a general likelihood-ratio test.
 
 ## Reproduce in GitHub Actions
 
@@ -38,7 +39,7 @@ Local run from repo root, with mada 0.5.12 installed:
 
     PHASE_B_BOOTSTRAP=100 Rscript scripts/07_test_phase_b.R
 
-The workflow uploads phase_B_outputs as a downloadable artifact, including: phaseB_study_table.csv, phaseB_baseline.csv, phaseB_correction_sensitivity.csv, phaseB_leave_one_out.csv, phaseB_bootstrap_replicates.csv, phaseB_bootstrap_summary.csv, phaseB_loo_correlation.png, phaseB_bootstrap_correlation.png and sessionInfo.txt.
+The workflow uploads phase_B_outputs as a downloadable artifact, including: phaseB_study_table.csv, phaseB_baseline.csv, phaseB_correction_sensitivity.csv, phaseB_leave_one_out.csv, phaseB_bootstrap_replicates.csv, phaseB_bootstrap_summary.csv, phaseB_loo_correlation.png, phaseB_bootstrap_correlation.png phaseB_profile_likelihood.csv, phaseB_profile_likelihood.png and sessionInfo.txt.
 
 ## Scientific interpretation
 
