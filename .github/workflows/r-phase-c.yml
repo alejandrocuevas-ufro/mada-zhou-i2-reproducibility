@@ -1,0 +1,59 @@
+name: R | Phase C known-rho Monte Carlo
+
+'on':
+  pull_request:
+    paths:
+      - 'scripts/09_*.R'
+      - '.github/workflows/r-phase-c.yml'
+      - 'docs/PHASE_C_SIMULATION_PLAN.md'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/09_*.R'
+      - '.github/workflows/r-phase-c.yml'
+  workflow_dispatch:
+    inputs:
+      replicates:
+        description: 'Replicates per scenario (1..1000). Defaults to 100'
+        required: false
+        type: number
+        default: 100
+
+permissions:
+  contents: read
+
+jobs:
+  simulation:
+    name: Known-rho meta-analysis simulation
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      R_KEEP_PKG_SOURCE: 'yes'
+      PHASE_C_REPS: ${{ github.event_name == 'pull_request' && '3' || inputs.replicates || '100' }}
+    steps:
+      - name: Check out exact revision
+        uses: actions/checkout@v4
+      - name: Install R environment
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+      - name: Install reproducible mada 0.5.12
+        shell: Rscript {0}
+        run: |
+          install.packages(c("remotes", "mada"))
+          remotes::install_version(
+            "mada", version="0.5.12",
+            repos="https://cloud.r-project.org",
+            dependencies=FALSE, upgrade="never")
+          stopifnot(as.character(packageVersion("mada"))=="0.5.12")
+      - name: Run population-simulation validation and Monte Carlo
+        run: Rscript scripts/09_test_phase_c.R
+      - name: Upload all Monte Carlo tables and graphs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-c-known-rho-results
+          path: phase_C_outputs/
+          if-no-files-found: warn
+          retention-days: 30
