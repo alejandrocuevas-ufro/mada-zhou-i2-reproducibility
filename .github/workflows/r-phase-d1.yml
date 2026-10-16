@@ -1,0 +1,96 @@
+name: Phase D1 audit
+
+# Re-runs the Phase D1 machinery with a reduced replicate count on every push
+# and pull request touching it, so the reproducibility checks and the
+# likelihood validation cannot silently rot.  The full run (400 replicates,
+# K = 4000 pseudo-true) is launched manually.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/1*_*.R'
+      - 'scripts/zhou_i2_utils.R'
+      - '.github/workflows/r-phase-d1.yml'
+  pull_request:
+    paths:
+      - 'scripts/1*_*.R'
+      - 'scripts/zhou_i2_utils.R'
+      - '.github/workflows/r-phase-d1.yml'
+  workflow_dispatch:
+    inputs:
+      audit_reps:
+        description: 'Replicates per scenario for the audit and factor runs'
+        required: false
+        default: '400'
+      pseudotrue_k:
+        description: 'K for the pseudo-true fits'
+        required: false
+        default: '4000'
+
+jobs:
+  phase-d1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.3'
+          use-public-rspm: true
+
+      - name: Install pinned mada and dependencies
+        run: |
+          Rscript -e 'install.packages(c("mvmeta","numDeriv"))'
+          Rscript -e 'install.packages("mada")'
+          Rscript -e 'stopifnot(as.character(packageVersion("mada")) == "0.5.12")'
+
+      - name: RNG stream checks
+        run: Rscript scripts/10_test_rng_streams.R
+
+      - name: Likelihood validation against mada
+        run: Rscript scripts/12_test_phase_d1.R
+
+      - name: Pseudo-true values
+        env:
+          D1_PSEUDOTRUE_K: ${{ github.event.inputs.pseudotrue_k || '400' }}
+          D1_PSEUDOTRUE_REPS: '2'
+        run: Rscript scripts/11_phase_d1_pseudotrue.R
+
+      - name: Convergence and identifiability audit
+        env:
+          D1_AUDIT_REPS: ${{ github.event.inputs.audit_reps || '20' }}
+        run: Rscript scripts/12_phase_d1_convergence_audit.R
+
+      - name: Design factors
+        env:
+          D1_FACTOR_REPS: ${{ github.event.inputs.audit_reps || '20' }}
+        run: Rscript scripts/13_phase_d1_design_factors.R
+
+      - name: Oracle arm
+        env:
+          D1_ORACLE_REPS: ${{ github.event.inputs.audit_reps || '20' }}
+        run: Rscript scripts/14_phase_d1_oracle.R
+
+      - name: Assert the structural claims still hold
+        run: |
+          Rscript -e '
+            s <- read.csv("results/D1_convergence_summary.csv")
+            stopifnot(all(s$frac_converged_flag == 1))
+            hi <- s[s$scenario == "rho0.99_K160", ]
+            stopifnot(hi$frac_exact_boundary > 0.5,
+                      hi$frac_singular_is_local_min > 0.5)
+            lo <- s[s$scenario == "rho0_K20", ]
+            stopifnot(lo$frac_exact_boundary < 0.1)
+            cat("Phase D1 structural assertions hold.\n")'
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase-d1-audit-results
+          path: |
+            results/D1_*.csv
+            results/D1_*.png
+            results/rng_nesting_check.csv
+          retention-days: 90
