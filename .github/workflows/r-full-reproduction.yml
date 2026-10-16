@@ -1,0 +1,55 @@
+name: R | full mada 0.5.12 reproduction
+
+'on':
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-reproduction:
+    name: Reproduce audit and 3000 REML simulations
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      R_KEEP_PKG_SOURCE: 'yes'
+    steps:
+      - name: Checkout research repository
+        uses: actions/checkout@v4
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+
+      - name: Install archived mada and dependencies
+        shell: Rscript {0}
+        run: |
+          install.packages("remotes", repos = "https://cloud.r-project.org")
+          remotes::install_version(
+            "mada", version = "0.5.12",
+            repos = "https://cloud.r-project.org",
+            dependencies = NA,
+            upgrade = "never"
+          )
+          stopifnot(as.character(packageVersion("mada")) == "0.5.12")
+          stopifnot(requireNamespace("MASS", quietly = TRUE))
+          cat("mada version:", as.character(packageVersion("mada")), "\n")
+
+      - name: Run original full reproduction
+        run: Rscript run_all.R
+
+      - name: Validate determinant boundary and TCCS application
+        run: Rscript scripts/05_test_determinant_boundary.R
+
+      - name: Upload complete reproducibility artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-mada-reproduction
+          path: |
+            results/
+            analisis_determinante_rho_v01_salida/
+          if-no-files-found: warn
+          retention-days: 30
