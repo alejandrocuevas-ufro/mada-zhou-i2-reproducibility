@@ -107,7 +107,7 @@ estimate <- function(counts,method) {
     GG <- diag(1/sqrt(W)) %*% P %*% diag(1/sqrt(W))
     eigenval <- eigen((GG+t(GG))/2,symmetric=TRUE,
                       only.values=TRUE)$values
-    if(min(eigenval)<-1e-6*max(1,max(abs(eigenval))))
+    if (min(eigenval) < (-1e-6 * max(1, max(abs(eigenval)))))
       stop("between-study covariance is materially indefinite")
     eigenval <- pmax(eigenval,0)
     list(rho=rho,P=P,W=W,comp=comp,
