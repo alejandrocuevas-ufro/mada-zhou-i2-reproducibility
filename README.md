@@ -93,3 +93,7 @@ The new automated [determinant/rho boundary check](.github/workflows/r-boundary-
 ## Phase A: determinant and extreme-correlation analysis
 
 The formal mathematical characterisation is described in [Phase A mathematical report](docs/PHASE_A_DETERMINANT_AND_RHO.md). Run `Rscript scripts/06_test_phase_a.R` to check the zero-set theorem, the rank-one counterexample, invariance under congruence transformations, extreme-correlation behaviour and the existing Pinto-Villalba TCCS illustration. This base-R workflow generates CSV tables, PNG/PDF curves, and `sessionInfo.txt` in `phase_A_outputs/`. Its regression test runs automatically in the GitHub Actions lightweight check. These matrix identities are independent of the previously documented `mada` implementation problems.
+
+## Phase B: robustness of the fitted correlation boundary
+
+The new [Phase B empirical stability protocol](docs/PHASE_B_REITSMA_STABILITY.md) examines the eight-arm Pinto-Villalba TCCS ischaemic model by changing REML versus ML, 0.25/0.5/1 continuity corrections, and leave-one-arm/family-out fits. It additionally records failures and near-boundary frequencies in study-level and publication-family bootstrap refits. Launch the isolated [Phase B R workflow](.github/workflows/r-phase-b.yml), which installs `mada` 0.5.12 and uploads the detailed `phase_B_outputs/` tables and figures. The original archived audit and results remain unchanged.

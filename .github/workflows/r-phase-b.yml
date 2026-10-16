@@ -1,0 +1,66 @@
+name: R | Phase B Reitsma stability
+
+'on':
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/07_*.R'
+      - 'scripts/08_*.R'
+      - '.github/workflows/r-phase-b.yml'
+  pull_request:
+    paths:
+      - 'scripts/07_*.R'
+      - 'scripts/08_*.R'
+      - '.github/workflows/r-phase-b.yml'
+      - 'docs/PHASE_B_REITSMA_STABILITY.md'
+  workflow_dispatch:
+    inputs:
+      bootstrap_replicates:
+        description: 'Per strategy/method (0-2000); default 400'
+        required: false
+        type: number
+        default: 400
+
+permissions:
+  contents: read
+
+jobs:
+  empirical-stability:
+    name: Fit REML/ML and study-level bootstrap
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      R_KEEP_PKG_SOURCE: 'yes'
+      PHASE_B_BOOTSTRAP: ${{ github.event_name == 'pull_request' && '30' || inputs.bootstrap_replicates || '400' }}
+    steps:
+      - name: Checkout the source revision
+        uses: actions/checkout@v4
+
+      - name: Set up R and public Posit package manager
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+
+      - name: Install mada 0.5.12 and dependencies
+        shell: Rscript {0}
+        run: |
+          install.packages(c("remotes", "mada"))
+          remotes::install_version("mada", version="0.5.12",
+                                   repos="https://cloud.r-project.org",
+                                   dependencies=FALSE, upgrade="never")
+          stopifnot(as.character(packageVersion("mada")) == "0.5.12")
+          cat("R:", as.character(getRversion()), "mada:",
+              as.character(packageVersion("mada")), "\n")
+
+      - name: Execute Phase B and test archived reproducibility
+        run: Rscript scripts/07_test_phase_b.R
+
+      - name: Save model fits, bootstrap outcomes and figures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-b-reitsma-stability
+          path: phase_B_outputs/
+          if-no-files-found: warn
+          retention-days: 30
