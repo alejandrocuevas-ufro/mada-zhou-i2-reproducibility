@@ -48,3 +48,16 @@ stopifnot(baseline$i2_zd_corrected_percent[1] < 0.05,
               "phaseB_bootstrap_correlation.png", "sessionInfo.txt")))))
 cat("PASS: Phase B data structure, archived REML fit, ML/REML sensitivity,\n",
     "leave-one-out design and bootstrap accounting.\n")
+
+
+# Profile the two-stage normal-normal likelihood at fixed rho,
+# with variances and intercepts re-optimised, to diagnose identification.
+source("scripts/08_phase_b_profile_likelihood.R")
+stopifnot(nrow(profile) == length(rho_grid) * 2L,
+          all(is.finite(profile$delta_deviance)),
+          all(profile$delta_deviance >= -1e-7),
+          all(profile$tau2_se > 0),
+          all(profile$tau2_fpr > 0),
+          all(file.exists(file.path(out_dir, c(
+            "phaseB_profile_likelihood.csv","phaseB_profile_likelihood.png")))))
+cat("PASS: Phase B profiled ML/REML likelihood and optimizer objective.\n")
