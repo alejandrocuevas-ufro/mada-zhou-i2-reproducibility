@@ -28,6 +28,7 @@ for (s in sample_schemes$scheme) {
 # True between-study matrices are held identical in marginal variances;
 # only rho, K and study denominators vary.
 good <- results[results$status=="ok",]
+stopifnot(nrow(good) > 0L, sum(sums$successful)>0L)
 if(nrow(good)>0) {
   stopifnot(all(is.finite(good$rho_hat)),
             all(abs(good$rho_hat)<=1),
