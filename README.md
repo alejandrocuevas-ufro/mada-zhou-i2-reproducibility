@@ -89,3 +89,7 @@ Archived release v1.0.0: https://doi.org/10.5281/zenodo.22887677
 ## GitHub Actions: run R without a local installation
 
 The new automated [determinant/rho boundary check](.github/workflows/r-boundary-check.yml) verifies limiting behaviour and the archived TCCS ischaemic reanalysis whenever a pull request is opened. The [full archived mada 0.5.12 audit](.github/workflows/r-full-reproduction.yml), including 3,000 REML simulations, is available on demand from the **Actions** tab after merging the workflow to `main`. Both workflows upload their outputs as downloadable artifacts. See [the step-by-step instructions](docs/GITHUB_ACTIONS.md) for execution and limitations.
+
+## Phase A: determinant and extreme-correlation analysis
+
+The formal mathematical characterisation is described in [Phase A mathematical report](docs/PHASE_A_DETERMINANT_AND_RHO.md). Run `Rscript scripts/06_test_phase_a.R` to check the zero-set theorem, the rank-one counterexample, invariance under congruence transformations, extreme-correlation behaviour and the existing Pinto-Villalba TCCS illustration. This base-R workflow generates CSV tables, PNG/PDF curves, and `sessionInfo.txt` in `phase_A_outputs/`. Its regression test runs automatically in the GitHub Actions lightweight check. These matrix identities are independent of the previously documented `mada` implementation problems.
