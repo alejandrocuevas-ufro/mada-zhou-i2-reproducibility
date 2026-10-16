@@ -240,8 +240,14 @@ draw_plot <- function(value,ylabel,file) {
     for(k in ks) {
       z <- d[d$K==k,]
       z <- z[order(z$rho_true),]
-      lines(z$rho_true,z[[value]],lty=match(k,ks),lwd=1.7)
-      points(z$rho_true,z[[value]],pch=match(k,ks),cex=.55)
+      yy <- z[[value]]
+      # This discordance is undefined outside population I2 >= 25%; do
+      # not plot such cases as an observed discordance probability of zero.
+      if (value == "discordant_low_I2_fraction_success") {
+        yy[z$pop_I2_ZD < 0.25] <- NA_real_
+      }
+      lines(z$rho_true,yy,lty=match(k,ks),lwd=1.7)
+      points(z$rho_true,yy,pch=match(k,ks),cex=.55)
     }
     legend("top",legend=paste("K =",ks),lty=seq_along(ks),
            pch=seq_along(ks),bty="n",cex=.65,ncol=3)
