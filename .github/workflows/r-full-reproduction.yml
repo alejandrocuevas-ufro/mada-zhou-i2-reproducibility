@@ -26,11 +26,13 @@ jobs:
       - name: Install archived mada and dependencies
         shell: Rscript {0}
         run: |
-          install.packages("remotes", repos = "https://cloud.r-project.org")
+          # Install dependencies from the runner's binary-capable R repository,
+          # then replace mada with the exact archived version.
+          install.packages(c("remotes", "mada"))
           remotes::install_version(
             "mada", version = "0.5.12",
             repos = "https://cloud.r-project.org",
-            dependencies = NA,
+            dependencies = FALSE,
             upgrade = "never"
           )
           stopifnot(as.character(packageVersion("mada")) == "0.5.12")
